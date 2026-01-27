@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Palavras • 3 Letras</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <main class="app" role="main">
+    <header class="topbar">
+      <div class="brand">
+        <div class="dot" aria-hidden="true"></div>
+        <div>
+          <div class="title">Palavras</div>
+          <div class="subtitle">3 letras reveladas</div>
+        </div>
+      </div>
+
+      <!-- Agora só tentativas -->
+      <div class="pill" id="metaPill" aria-live="polite">
+        <span id="tentativas">4 tentativas</span>
+      </div>
+    </header>
+
+    <section class="card" aria-label="Desafio">
+      <div class="card-top">
+        <div class="label">Dica</div>
+        <p class="hint" id="dica">Carregando…</p>
+      </div>
+
+      <div class="card-mid">
+        <div class="label">Palavra</div>
+        <div class="mask" id="mascara" aria-label="Palavra mascarada"></div>
+      </div>
+
+      <form class="card-bottom" id="form" autocomplete="off">
+        <label class="label" for="chute">Sua resposta</label>
+        <div class="input-row">
+          <input
+            id="chute"
+            type="text"
+            inputmode="text"
+            autocapitalize="none"
+            spellcheck="false"
+            placeholder="Digite e pressione Enter"
+            aria-label="Digite sua resposta"
+          />
+          <button class="btn" type="submit">Chutar</button>
+        </div>
+
+        <div class="feedback" id="feedback" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <footer class="footer">
+      <button class="ghost" id="pular" type="button">Pular</button>
+      <button class="ghost" id="reiniciar" type="button">Reiniciar</button>
+    </footer>
+  </main>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modalBackdrop" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-title" id="modalTitle">—</div>
+      <div class="modal-text" id="modalText">—</div>
+
+      <div class="modal-actions">
+        <button class="btn" id="modalBtn">Próxima</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
