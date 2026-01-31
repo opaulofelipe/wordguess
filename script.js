@@ -4,7 +4,7 @@
 const $ = (sel) => document.querySelector(sel);
 
 function normalizeStr(s) {
-  // ✅ Remove APENAS acentos (não mexe com hífen, espaços internos, etc.)
+  // Remove APENAS acentos (não mexe com hífen, espaços internos, etc.)
   return (s ?? "")
     .toString()
     .trim()
@@ -56,6 +56,44 @@ function shuffle(arr) {
     { passive: false }
   );
 })();
+
+/* =========================
+   Áudio de acerto (acerto.mp3 na raiz)
+   Observação: iOS exige interação do usuário antes de tocar áudio.
+   Aqui garantimos isso "armando" o áudio no primeiro toque/tecla.
+========================= */
+const hitSound = new Audio("./acerto.mp3");
+hitSound.preload = "auto";
+hitSound.volume = 0.9;
+
+let audioUnlocked = false;
+async function unlockAudioOnce() {
+  if (audioUnlocked) return;
+  audioUnlocked = true;
+  try {
+    // toca em volume 0 rapidamente para "desbloquear" no iOS
+    const prevVol = hitSound.volume;
+    hitSound.volume = 0;
+    await hitSound.play();
+    hitSound.pause();
+    hitSound.currentTime = 0;
+    hitSound.volume = prevVol;
+  } catch {
+    // se falhar, tudo bem: ainda tentaremos tocar quando acertar
+  }
+}
+["pointerdown", "touchstart", "keydown"].forEach((evt) => {
+  window.addEventListener(evt, unlockAudioOnce, { once: true, passive: true });
+});
+
+function playHitSound() {
+  try {
+    hitSound.currentTime = 0;
+    hitSound.play();
+  } catch {
+    // ignora (alguns browsers podem bloquear se não houve interação)
+  }
+}
 
 /* =========================
    Confetti (canvas simples)
@@ -177,7 +215,7 @@ function renderMask() {
 
   for (let i = 0; i < word.length; i++) {
     const ch = word[i];
-    const isSpace = ch === " " || ch === "-"; // hífen tratado como "separador visual" igual antes
+    const isSpace = ch === " " || ch === "-";
     const revealed = indicesRevelados.includes(i);
 
     const cell = document.createElement("span");
@@ -229,6 +267,10 @@ function handleGuess(rawGuess) {
 
   if (guess === answer) {
     revealAnswerInMask();
+
+    // ✅ SOM DE ACERTO
+    playHitSound();
+
     confetti.burst();
     showModal("Parabéns! 🎉", `Você acertou: ${atual.palavra.toUpperCase()}`, "Próxima");
     return;
