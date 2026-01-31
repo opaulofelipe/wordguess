@@ -1,6 +1,6 @@
 {
-  "name": "Palavras",
-  "short_name": "Palavras",
+  "name": "Wordguess",
+  "short_name": "Wordguess",
   "description": "Jogo de adivinhação com 3 letras reveladas.",
   "start_url": "./",
   "scope": "./",
